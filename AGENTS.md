@@ -8,3 +8,13 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Architecture rules
+- Modular monolith: one folder per domain in `src/modules/<domain>/` (`*.functions.ts` API, `*.server.ts` logic); why: modules stay extractible to a separate service later.
+- Three surfaces share one API: client site (public routes), back-office (`/staff/*`), POS (`/pos`); why: single source of truth for stock.
+- All stock changes go through one transactional SQL function writing `stock_movements`; why: no overselling across channels.
+- Roles live in a separate `user_roles` table with optional shop scope, enforced by RLS + API + UI; why: prevents privilege escalation.
+- External services (payment, SMS, carrier, maps) behind `*Provider` interfaces; why: vendor-swappable and portable.
+- Only standard npm packages and versioned SQL migrations; why: project must run outside Lovable.
+- Money stored as integer XAF; why: no subunit in FCFA.
+- Architecture docs live in `docs/`; keep them updated when structure changes.
