@@ -10,53 +10,143 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as PosRouteImport } from './routes/pos'
-import { Route as StaffRouteImport } from './routes/staff'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AccesRefuseRouteImport } from './routes/acces-refuse'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedCompteRouteImport } from './routes/_authenticated/compte'
+import { Route as AuthenticatedPosRouteImport } from './routes/_authenticated/pos'
+import { Route as AuthenticatedStaffRouteImport } from './routes/_authenticated/staff'
+import { Route as AuthenticatedStaffIndexRouteImport } from './routes/_authenticated/staff.index'
+import { Route as AuthenticatedStaffBoutiquesRouteImport } from './routes/_authenticated/staff.boutiques'
+import { Route as AuthenticatedStaffUtilisateursRouteImport } from './routes/_authenticated/staff.utilisateurs'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PosRoute = PosRouteImport.update({
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccesRefuseRoute = AccesRefuseRouteImport.update({
+  id: '/acces-refuse',
+  path: '/acces-refuse',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedCompteRoute = AuthenticatedCompteRouteImport.update({
+  id: '/compte',
+  path: '/compte',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedPosRoute = AuthenticatedPosRouteImport.update({
   id: '/pos',
   path: '/pos',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const StaffRoute = StaffRouteImport.update({
+const AuthenticatedStaffRoute = AuthenticatedStaffRouteImport.update({
   id: '/staff',
   path: '/staff',
-  getParentRoute: () => rootRouteImport,
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedStaffIndexRoute = AuthenticatedStaffIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AuthenticatedStaffRoute,
+} as any)
+const AuthenticatedStaffBoutiquesRoute =
+  AuthenticatedStaffBoutiquesRouteImport.update({
+    id: '/boutiques',
+    path: '/boutiques',
+    getParentRoute: () => AuthenticatedStaffRoute,
+  } as any)
+const AuthenticatedStaffUtilisateursRoute =
+  AuthenticatedStaffUtilisateursRouteImport.update({
+    id: '/utilisateurs',
+    path: '/utilisateurs',
+    getParentRoute: () => AuthenticatedStaffRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/pos': typeof PosRoute
-  '/staff': typeof StaffRoute
+  '/acces-refuse': typeof AccesRefuseRoute
+  '/auth': typeof AuthRoute
+  '/compte': typeof AuthenticatedCompteRoute
+  '/pos': typeof AuthenticatedPosRoute
+  '/staff': typeof AuthenticatedStaffRouteWithChildren
+  '/staff/boutiques': typeof AuthenticatedStaffBoutiquesRoute
+  '/staff/utilisateurs': typeof AuthenticatedStaffUtilisateursRoute
+  '/staff/': typeof AuthenticatedStaffIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/pos': typeof PosRoute
-  '/staff': typeof StaffRoute
+  '/acces-refuse': typeof AccesRefuseRoute
+  '/auth': typeof AuthRoute
+  '/compte': typeof AuthenticatedCompteRoute
+  '/pos': typeof AuthenticatedPosRoute
+  '/staff/boutiques': typeof AuthenticatedStaffBoutiquesRoute
+  '/staff/utilisateurs': typeof AuthenticatedStaffUtilisateursRoute
+  '/staff': typeof AuthenticatedStaffIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/pos': typeof PosRoute
-  '/staff': typeof StaffRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/acces-refuse': typeof AccesRefuseRoute
+  '/auth': typeof AuthRoute
+  '/_authenticated/compte': typeof AuthenticatedCompteRoute
+  '/_authenticated/pos': typeof AuthenticatedPosRoute
+  '/_authenticated/staff': typeof AuthenticatedStaffRouteWithChildren
+  '/_authenticated/staff/boutiques': typeof AuthenticatedStaffBoutiquesRoute
+  '/_authenticated/staff/utilisateurs': typeof AuthenticatedStaffUtilisateursRoute
+  '/_authenticated/staff/': typeof AuthenticatedStaffIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/pos' | '/staff'
+  fullPaths:
+    | '/'
+    | '/acces-refuse'
+    | '/auth'
+    | '/compte'
+    | '/pos'
+    | '/staff'
+    | '/staff/boutiques'
+    | '/staff/utilisateurs'
+    | '/staff/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/pos' | '/staff'
-  id: '__root__' | '/' | '/pos' | '/staff'
+  to:
+    | '/'
+    | '/acces-refuse'
+    | '/auth'
+    | '/compte'
+    | '/pos'
+    | '/staff/boutiques'
+    | '/staff/utilisateurs'
+    | '/staff'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/acces-refuse'
+    | '/auth'
+    | '/_authenticated/compte'
+    | '/_authenticated/pos'
+    | '/_authenticated/staff'
+    | '/_authenticated/staff/boutiques'
+    | '/_authenticated/staff/utilisateurs'
+    | '/_authenticated/staff/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  PosRoute: typeof PosRoute
-  StaffRoute: typeof StaffRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AccesRefuseRoute: typeof AccesRefuseRoute
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -68,27 +158,107 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pos': {
-      id: '/pos'
-      path: '/pos'
-      fullPath: '/pos'
-      preLoaderRoute: typeof PosRouteImport
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/staff': {
-      id: '/staff'
+    '/acces-refuse': {
+      id: '/acces-refuse'
+      path: '/acces-refuse'
+      fullPath: '/acces-refuse'
+      preLoaderRoute: typeof AccesRefuseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/compte': {
+      id: '/_authenticated/compte'
+      path: '/compte'
+      fullPath: '/compte'
+      preLoaderRoute: typeof AuthenticatedCompteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/pos': {
+      id: '/_authenticated/pos'
+      path: '/pos'
+      fullPath: '/pos'
+      preLoaderRoute: typeof AuthenticatedPosRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/staff': {
+      id: '/_authenticated/staff'
       path: '/staff'
       fullPath: '/staff'
-      preLoaderRoute: typeof StaffRouteImport
-      parentRoute: typeof rootRouteImport
+      preLoaderRoute: typeof AuthenticatedStaffRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/staff/': {
+      id: '/_authenticated/staff/'
+      path: '/'
+      fullPath: '/staff/'
+      preLoaderRoute: typeof AuthenticatedStaffIndexRouteImport
+      parentRoute: typeof AuthenticatedStaffRoute
+    }
+    '/_authenticated/staff/boutiques': {
+      id: '/_authenticated/staff/boutiques'
+      path: '/boutiques'
+      fullPath: '/staff/boutiques'
+      preLoaderRoute: typeof AuthenticatedStaffBoutiquesRouteImport
+      parentRoute: typeof AuthenticatedStaffRoute
+    }
+    '/_authenticated/staff/utilisateurs': {
+      id: '/_authenticated/staff/utilisateurs'
+      path: '/utilisateurs'
+      fullPath: '/staff/utilisateurs'
+      preLoaderRoute: typeof AuthenticatedStaffUtilisateursRouteImport
+      parentRoute: typeof AuthenticatedStaffRoute
     }
   }
 }
 
+interface AuthenticatedStaffRouteChildren {
+  AuthenticatedStaffBoutiquesRoute: typeof AuthenticatedStaffBoutiquesRoute
+  AuthenticatedStaffUtilisateursRoute: typeof AuthenticatedStaffUtilisateursRoute
+  AuthenticatedStaffIndexRoute: typeof AuthenticatedStaffIndexRoute
+}
+
+const AuthenticatedStaffRouteChildren: AuthenticatedStaffRouteChildren = {
+  AuthenticatedStaffBoutiquesRoute: AuthenticatedStaffBoutiquesRoute,
+  AuthenticatedStaffUtilisateursRoute: AuthenticatedStaffUtilisateursRoute,
+  AuthenticatedStaffIndexRoute: AuthenticatedStaffIndexRoute,
+}
+
+const AuthenticatedStaffRouteWithChildren =
+  AuthenticatedStaffRoute._addFileChildren(AuthenticatedStaffRouteChildren)
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedCompteRoute: typeof AuthenticatedCompteRoute
+  AuthenticatedPosRoute: typeof AuthenticatedPosRoute
+  AuthenticatedStaffRoute: typeof AuthenticatedStaffRouteWithChildren
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedCompteRoute: AuthenticatedCompteRoute,
+  AuthenticatedPosRoute: AuthenticatedPosRoute,
+  AuthenticatedStaffRoute: AuthenticatedStaffRouteWithChildren,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  PosRoute: PosRoute,
-  StaffRoute: StaffRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AccesRefuseRoute: AccesRefuseRoute,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,5 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
-import logo from "@/assets/logo-destyshop.jpg";
+import { createFileRoute } from "@tanstack/react-router";
+import { SiteHeader } from "@/components/brand/SiteHeader";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -24,15 +24,7 @@ const modes = [
 function Index() {
   return (
     <div className="min-h-screen bg-background">
-      <header className="bg-secondary text-secondary-foreground">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <img src={logo} alt="Destyshop" className="h-12 w-auto rounded-full" />
-          <nav className="flex gap-2 text-sm">
-            <Link to="/staff" className="rounded-md px-3 py-2 hover:bg-sidebar-accent">Espace équipe</Link>
-            <Link to="/pos" className="rounded-md bg-primary px-3 py-2 text-primary-foreground">Caisse</Link>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
       <section className="bg-secondary text-secondary-foreground">
         <div className="mx-auto max-w-6xl px-4 pb-16 pt-10 text-center">
           <p className="font-[family-name:var(--font-display)] text-5xl text-primary md:text-6xl">DestyShop</p>
