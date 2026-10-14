@@ -51,18 +51,18 @@ function AuthPage() {
   async function onLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const parsed = credentials.safeParse(Object.fromEntries(new FormData(e.currentTarget)));
-    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message); return; }
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword(parsed.data);
     setLoading(false);
-    if (error) return toast.error("Email ou mot de passe incorrect.");
+    if (error) { toast.error("Email ou mot de passe incorrect."); return; }
     navigate({ to: safeRedirect(redirect) });
   }
 
   async function onSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const parsed = signupSchema.safeParse(Object.fromEntries(new FormData(e.currentTarget)));
-    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message);
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message); return; }
     setLoading(true);
     const { email, password, full_name, phone } = parsed.data;
     const { error } = await supabase.auth.signUp({
@@ -70,7 +70,7 @@ function AuthPage() {
       options: { emailRedirectTo: window.location.origin, data: { full_name, phone: phone || null } },
     });
     setLoading(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     toast.success("Compte créé. Vérifiez votre boîte mail pour confirmer votre adresse.");
   }
 

@@ -36,9 +36,9 @@ src/
   pos/offline/       outbox IndexedDB, synchronisation, cache catalogue
   components/        ui · client · staff · pos
   lib/               rbac, money (XAF), providers/
-supabase/migrations/ SQL versionné
+drizzle/migrations/ SQL versionné · supabase/seed.sql
 docs/                ce dossier
-docker-compose.yml   .env.example
+.env.example · scripts/ (db-migrate, db-seed)
 ```
 
 ## Invariants critiques
