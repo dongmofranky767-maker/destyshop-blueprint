@@ -29,8 +29,8 @@ export const createShop = createServerFn({ method: "POST" })
     const { data: shop, error } = await context.supabase
       .from("shops")
       .insert({
-        code: data.code, name: data.name, city_id: data.city_id ?? null, address: data.address,
-        phone: data.phone, status: data.status, location: location as unknown as never,
+        code: data.code, name: data.name, city_id: data.city_id ?? null, address: data.address ?? null,
+        phone: data.phone ?? null, status: data.status, location: location as unknown as never,
       })
       .select("id")
       .single();

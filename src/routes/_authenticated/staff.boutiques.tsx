@@ -32,8 +32,8 @@ function ShopsPage() {
     e.preventDefault();
     const form = e.currentTarget;
     const raw = Object.fromEntries(new FormData(form)) as Record<string, string>;
-    const parsed = shopInputSchema.safeParse({ code: raw.code?.toUpperCase(), name: raw.name, address: raw.address || undefined, phone: raw.phone || undefined });
-    if (!parsed.success) return toast.error(parsed.error.issues[0]?.message);
+    const parsed = shopInputSchema.safeParse({ code: raw['code']?.toUpperCase(), name: raw['name'], address: raw['address'] || undefined, phone: raw['phone'] || undefined });
+    if (!parsed.success) { toast.error(parsed.error.issues[0]?.message); return; }
     setBusy(true);
     try {
       await create({ data: parsed.data });
