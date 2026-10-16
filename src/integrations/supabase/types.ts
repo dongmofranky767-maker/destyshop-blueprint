@@ -479,8 +479,10 @@ export type Database = {
         Row: {
           address_id: string | null
           assigned_employee_id: string | null
+          client_request_id: string | null
           created_at: string
           customer_id: string
+          customer_note: string | null
           fulfillment: Database["public"]["Enums"]["fulfillment_mode"]
           id: string
           reference: string
@@ -492,8 +494,10 @@ export type Database = {
         Insert: {
           address_id?: string | null
           assigned_employee_id?: string | null
+          client_request_id?: string | null
           created_at?: string
           customer_id: string
+          customer_note?: string | null
           fulfillment: Database["public"]["Enums"]["fulfillment_mode"]
           id?: string
           reference?: string
@@ -505,8 +509,10 @@ export type Database = {
         Update: {
           address_id?: string | null
           assigned_employee_id?: string | null
+          client_request_id?: string | null
           created_at?: string
           customer_id?: string
+          customer_note?: string | null
           fulfillment?: Database["public"]["Enums"]["fulfillment_mode"]
           id?: string
           reference?: string
@@ -1186,6 +1192,7 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      cancel_my_order: { Args: { _order_id: string }; Returns: undefined }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -1205,6 +1212,40 @@ export type Database = {
       is_shop_staff: {
         Args: { _shop_id: string; _user_id: string }
         Returns: boolean
+      }
+      nearby_shops: {
+        Args: { _lat?: number; _lng?: number }
+        Returns: {
+          address: string
+          city: string
+          code: string
+          distance_km: number
+          id: string
+          lat: number
+          lng: number
+          name: string
+          phone: string
+        }[]
+      }
+      place_order: {
+        Args: {
+          _address_id: string
+          _fulfillment: Database["public"]["Enums"]["fulfillment_mode"]
+          _items: Json
+          _note?: string
+          _request_id: string
+          _shop_id: string
+        }
+        Returns: string
+      }
+      product_stats: {
+        Args: never
+        Returns: {
+          avg_rating: number
+          product_id: string
+          review_count: number
+          sold_qty: number
+        }[]
       }
     }
     Enums: {
